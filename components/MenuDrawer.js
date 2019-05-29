@@ -5,6 +5,7 @@ import {
    StyleSheet,
    Platfrom,
    Dimensions,
+   ScrollView,
    TouchableOpacity,
    Image
  } from 'react-native'
@@ -25,17 +26,25 @@ class MenuDrawer extends React.Component {
   render() {
     return (
       <View style={styles.container}>
+        <ScrollView style={styles.scroller}>
         <View style={styles.topLinks}>
           <View style={styles.profile}>
             <View style={styles.imageView}>
                <Image style={styles.img} source={{uri: 'https://avatars2.githubusercontent.com/u/42851238?s=460&v=4'}} />
+            </View>
+            <View style={styles.profileText}>
+            <Text style={styles.name}>Manny Shapir</Text>
             </View>
           </View>
         </View>
         <View style={styles.bottomLinks}>
           {this.navLink('Home', 'Home')}
           {this.navLink('Hello', 'Hello')}
+          {this.navLink('Hello', 'Past Deliveries')}
+          {this.navLink('Hello', 'Payment')}
+          {this.navLink('Hello', 'Settings')}
         </View>
+        </ScrollView>
       </View>
     );
   }
@@ -46,6 +55,10 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: "grey",
+    height: 100,
+  },
+  scroller: {
+    flex: 1,
   },
   img: {
     height: 70,
@@ -70,6 +83,17 @@ const styles = StyleSheet.create({
     paddingTop: 25,
     borderBottomWidth: 1,
     borderBottomColor: '#777777',
+  },
+  profileText: {
+    flex: 3,
+    flexDirection: 'column',
+    justifyContent: 'center',
+  },
+  name: {
+    fontSize: 20,
+    paddingBottom: 5,
+    color: 'white',
+    textAlign: 'left',
   },
   imageView: {
     flex: 1,
