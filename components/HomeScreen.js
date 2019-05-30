@@ -1,6 +1,7 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
 import { createStackNavigator, createAppContainer } from "react-navigation";
+import MapView from 'react-native-maps';
 import MenuButton from './MenuButton'
 
 
@@ -9,22 +10,30 @@ class HomeScreen extends React.Component {
     return (
       <View style={styles.container}>
         <MenuButton navigation={this.props.navigation}/>
-        <Text style={styles.text}>Home Screen</Text>
+        <MapView
+         style={styles.map}
+         region={{
+           latitude: 37.78825,
+           longitude: -122.4324,
+           latitudeDelta: 0.015,
+           longitudeDelta: 0.0121,
+         }}
+     >
+     </MapView>
       </View>
     );
   }
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "orange",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-  text: {
-    fontSize: 30,
-  }
-})
+ container: {
+   ...StyleSheet.absoluteFillObject,
+   justifyContent: 'flex-end',
+   alignItems: 'center',
+ },
+ map: {
+   ...StyleSheet.absoluteFillObject,
+ },
+});
 
 export default HomeScreen;
