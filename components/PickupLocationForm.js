@@ -1,5 +1,16 @@
 import React, { Component } from 'react';
-import { Text, View, TextInput, StyleSheet, TouchableOpacity } from 'react-native';
+import { GoogleAutoComplete } from 'react-native-google-autocomplete'
+import LocationAutoComplete from './LocationAutoComplete';
+import {
+  Text,
+  View,
+  TextInput,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  ActivityIndicator,
+  Alert
+} from 'react-native';
 
 
 class PickupLocationForm extends Component {
@@ -8,25 +19,47 @@ class PickupLocationForm extends Component {
     address: ''
   }
 
-  handleChange = (address) => {
+  handleChange = (event) => {
     this.setState({
-      address
+      address: event.value
     })
+  }
+
+  submitAddress = (address) => {
+     this.props.pickupLocation(address);
+     this.setState({ address });
 
   }
+
 
   render() {
     return (
       <View style={styles.form}>
-        <TextInput
-            style={styles.textInput}
-            placeholder="Set pickup location"
-            onChangeText={this.handleChange}
-            value={this.state.address}
-          />
-          <TouchableOpacity onPress={() => this.props.pickupLocation(this.state.address)}>
-            <Text>Enter</Text>
-          </TouchableOpacity>
+          <GoogleAutoComplete
+            apiKey=''
+            debounce={300}
+            >
+            {({ handleTextChange, locationResults, isSearching, inputValue, clearSearchs }) => (
+              <React.Fragment>
+              {console.log(locationResults)}
+                <View>
+                  <TextInput
+                      style={styles.textInput}
+                      placeholder="Pickup location..."
+                      onChangeText={handleTextChange}
+                      value={inputValue}
+
+                    />
+                </View>
+                {isSearching && <ActivityIndicator size='large' color='black'/>}
+                <ScrollView>
+                  {locationResults.map(res => {
+                    return <LocationAutoComplete key={res.id} {...res} submitAddress={this.submitAddress} clearSearchs={clearSearchs}/>
+                  })}
+                </ScrollView>
+              </React.Fragment>
+            )}
+           </GoogleAutoComplete>
         </View>
     );
   }
@@ -43,9 +76,10 @@ const styles = StyleSheet.create({
   textInput: {
     backgroundColor: 'white',
     borderColor: 'black',
-    borderTopWidth: 1,
-    borderBottomWidth: 1,
-    height: 30,
+    textAlign: 'center',
+    borderWidth: 1,
+    borderRadius: 20,
+    height: 40,
     width: 200,
     fontSize: 15,
   }
