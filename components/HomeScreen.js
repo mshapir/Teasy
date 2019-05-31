@@ -30,7 +30,7 @@ class HomeScreen extends React.Component {
 
 
     pickupLocation = (address) => {
-      Geocode.setApiKey("AIzaSyCVR7PgR7koSSt-ljMPwMRVQFuOdc2F7Ec")
+      Geocode.setApiKey("")
       Geocode.fromAddress(address)
       .then( response => {
         const { lat, lng } = response.results[0].geometry.location;
