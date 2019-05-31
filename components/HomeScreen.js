@@ -1,8 +1,10 @@
 import React from "react";
 import { View, Text, StyleSheet } from "react-native";
+import Geocode from "react-geocode";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import MapView, { Marker } from 'react-native-maps';
 import MenuButton from './MenuButton'
+import PickupLocationForm from './PickupLocationForm';
 
 
 
@@ -27,10 +29,27 @@ class HomeScreen extends React.Component {
   }
 
 
+    pickupLocation = (address) => {
+      Geocode.setApiKey("AIzaSyCVR7PgR7koSSt-ljMPwMRVQFuOdc2F7Ec")
+      Geocode.fromAddress(address)
+      .then( response => {
+        const { lat, lng } = response.results[0].geometry.location;
+        this.setState({
+          latitude: lat,
+          longitude: lng,
+          error: null
+        })
+        }, error => {
+        console.error(error);
+        }
+        );
+      }
+
   render() {
     return (
       <View style={styles.container}>
-        <MenuButton navigation={this.props.navigation}/>
+        <MenuButton navigation={this.props.navigation} />
+        <PickupLocationForm pickupLocation={this.pickupLocation} />
         <MapView
          style={styles.map}
          region={{
