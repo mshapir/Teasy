@@ -10,20 +10,17 @@ import {
   ScrollView,
   ActivityIndicator,
   Alert
+
 } from 'react-native';
 
 
 class PickupLocationForm extends Component {
 
   state={
-    address: ''
+    address: '',
+    focus: false
   }
 
-  handleChange = (event) => {
-    this.setState({
-      address: event.value
-    })
-  }
 
   submitAddress = (address) => {
      this.props.pickupLocation(address);
@@ -32,35 +29,46 @@ class PickupLocationForm extends Component {
   }
 
 
+  handleFocus = () => {
+    this.setState({
+      focus: true
+    })
+  }
+
+  blur = () => {
+    this.setState({
+      focus: false
+    })
+  }
+
   render() {
     return (
-      <View style={styles.form}>
-          <GoogleAutoComplete
-            apiKey=''
-            debounce={300}
-            >
-            {({ handleTextChange, locationResults, isSearching, inputValue, clearSearchs }) => (
-              <React.Fragment>
-              {console.log(locationResults)}
-                <View>
-                  <TextInput
-                      style={styles.textInput}
-                      placeholder="Pickup location..."
-                      onChangeText={handleTextChange}
-                      value={inputValue}
-
-                    />
-                </View>
-                {isSearching && <ActivityIndicator size='large' color='black'/>}
-                <ScrollView>
-                  {locationResults.map(res => {
-                    return <LocationAutoComplete key={res.id} {...res} submitAddress={this.submitAddress} clearSearchs={clearSearchs}/>
-                  })}
-                </ScrollView>
-              </React.Fragment>
-            )}
-           </GoogleAutoComplete>
-        </View>
+        <View style={styles.form}>
+            <GoogleAutoComplete
+              apiKey='AIzaSyBHB3UMHJNEgWjkZR1zaAx0lzMHJEqUFxs'
+              debounce={300}
+              >
+              {({ handleTextChange, locationResults, isSearching, inputValue, clearSearchs }) => (
+                <React.Fragment>
+                {console.log(locationResults)}
+                    <TextInput
+                        style={styles.textInput}
+                        placeholder="Pickup location..."
+                        onChangeText={handleTextChange}
+                        value={this.state.focus ? inputValue : this.state.address}
+                        onFocus={this.handleFocus}
+                        onBlur={this.blur}
+                      />
+                  {isSearching && <ActivityIndicator size='large' color='black'/>}
+                  <ScrollView>
+                    {locationResults.map(res => {
+                      return <LocationAutoComplete key={res.id} {...res} submitAddress={this.submitAddress} clearSearchs={clearSearchs} locationSet={this.props.locationSet}/>
+                    })}
+                  </ScrollView>
+                </React.Fragment>
+              )}
+             </GoogleAutoComplete>
+          </View>
     );
   }
 }
