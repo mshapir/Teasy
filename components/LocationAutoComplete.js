@@ -6,6 +6,7 @@ class LocationAutoComplete extends Component {
   handleSubmit = () => {
     this.props.submitAddress(this.props.description)
     this.props.clearSearchs()
+    this.props.locationSet()
   }
 
   render() {
@@ -27,6 +28,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'white',
     height: 40,
     width: 200,
+    padding: 10,
     borderRadius: 20,
     textAlign: 'center',
     borderBottomWidth: StyleSheet.hairlineWidth,

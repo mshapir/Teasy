@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Alert, TouchableOpacity } from "react-native";
 import Geocode from "react-geocode";
 import { createStackNavigator, createAppContainer } from "react-navigation";
 import MapView, { Marker } from 'react-native-maps';
 import MenuButton from './MenuButton'
+import BackButton from './BackButton'
 import PickupLocationForm from './PickupLocationForm';
 
 
@@ -13,7 +14,8 @@ class HomeScreen extends React.Component {
   state={
     latitude: 0,
     longitude: 0,
-    error: null
+    error: null,
+    setButtonClicked: false
   }
 
   componentDidMount(){
@@ -30,7 +32,7 @@ class HomeScreen extends React.Component {
 
 
     pickupLocation = (address) => {
-      Geocode.setApiKey("")
+      Geocode.setApiKey("AIzaSyBHB3UMHJNEgWjkZR1zaAx0lzMHJEqUFxs")
       Geocode.fromAddress(address)
       .then( response => {
         const { lat, lng } = response.results[0].geometry.location;
@@ -45,23 +47,51 @@ class HomeScreen extends React.Component {
         );
       }
 
+      handleButton = () => {
+        this.setState({
+          setButtonClicked: !this.state.setButtonClicked
+        })
+      }
+
+      locationSet = () => {
+        this.setState({
+          setButtonClicked: !this.state.setButtonClicked
+        })
+      }
+
+      back = () => {
+        this.setState({
+          setButtonClicked: !this.state.setButtonClicked
+        })
+      }
+
+
+
   render() {
     return (
-      <View style={styles.container}>
-        <MenuButton navigation={this.props.navigation} />
-        <PickupLocationForm pickupLocation={this.pickupLocation} />
-        <MapView
-         style={styles.map}
-         region={{
-           latitude: this.state.latitude,
-           longitude: this.state.longitude,
-           latitudeDelta: 0.015,
-           longitudeDelta: 0.0121,
-         }}
-     >
-     <Marker coordinate={this.state} />
-     </MapView>
-      </View>
+        this.state.setButtonClicked ?
+          <View style={styles.container}>
+          <BackButton back={this.back} />
+          <PickupLocationForm pickupLocation={this.pickupLocation} locationSet={this.locationSet} />
+          </View>
+          :
+          <View style={styles.container}>
+         <MenuButton navigation={this.props.navigation} />
+         <MapView
+            style={styles.map}
+            region={{
+              latitude: this.state.latitude,
+              longitude: this.state.longitude,
+              latitudeDelta: 0.015,
+              longitudeDelta: 0.0121,
+            }}
+          >
+         <Marker coordinate={this.state} />
+         </MapView>
+         <TouchableOpacity style={styles.button} onPress={this.handleButton} >
+         <Text style={styles.text}> Set pick up and drop off</Text>
+         </TouchableOpacity>
+         </View>
     );
   }
 }
@@ -75,6 +105,20 @@ const styles = StyleSheet.create({
  map: {
    ...StyleSheet.absoluteFillObject,
  },
+ button: {
+   flex: 1,
+   padding: 10,
+   zIndex: 9,
+   position: "absolute",
+   backgroundColor: '#ff5733',
+   borderRadius: 25,
+   justifyContent: 'flex-end',
+   bottom: 125
+ },
+ text: {
+   fontSize: 25,
+   color: 'white'
+ }
 });
 
 export default HomeScreen;
