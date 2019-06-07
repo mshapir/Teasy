@@ -26,7 +26,7 @@ const styles = StyleSheet.create({
   backIcon: {
     zIndex: 9,
     position: "absolute",
-    top: 60,
+    top: 75,
     left: 30,
   }
 })

@@ -32,7 +32,7 @@ class HomeScreen extends React.Component {
 
 
     pickupLocation = (address) => {
-      Geocode.setApiKey("AIzaSyBHB3UMHJNEgWjkZR1zaAx0lzMHJEqUFxs")
+      Geocode.setApiKey("AIzaSyBJhXu7oPiaVW_74zBSwYorhDPA_hGwgP4")
       Geocode.fromAddress(address)
       .then( response => {
         const { lat, lng } = response.results[0].geometry.location;
@@ -76,21 +76,21 @@ class HomeScreen extends React.Component {
           </View>
           :
           <View style={styles.container}>
-         <MenuButton navigation={this.props.navigation} />
-         <MapView
-            style={styles.map}
-            region={{
-              latitude: this.state.latitude,
-              longitude: this.state.longitude,
-              latitudeDelta: 0.015,
-              longitudeDelta: 0.0121,
-            }}
-          >
-         <Marker coordinate={this.state} />
-         </MapView>
-         <TouchableOpacity style={styles.button} onPress={this.handleButton} >
-         <Text style={styles.text}> Set pick up and drop off</Text>
-         </TouchableOpacity>
+           <MenuButton navigation={this.props.navigation} />
+           <MapView
+              style={styles.map}
+              region={{
+                latitude: this.state.latitude,
+                longitude: this.state.longitude,
+                latitudeDelta: 0.015,
+                longitudeDelta: 0.0121,
+              }}
+            >
+           <Marker coordinate={this.state} />
+           </MapView>
+           <TouchableOpacity style={styles.button} onPress={this.handleButton} >
+           <Text style={styles.text}> Set pick up and drop off</Text>
+           </TouchableOpacity>
          </View>
     );
   }
