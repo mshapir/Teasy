@@ -45,7 +45,7 @@ class PickupLocationForm extends Component {
     return (
         <View style={styles.form}>
             <GoogleAutoComplete
-              apiKey='AIzaSyBJhXu7oPiaVW_74zBSwYorhDPA_hGwgP4'
+              apiKey='AIzaSyBHB3UMHJNEgWjkZR1zaAx0lzMHJEqUFxs'
               debounce={300}
               >
               {({ handleTextChange, locationResults, isSearching, inputValue, clearSearchs }) => (
